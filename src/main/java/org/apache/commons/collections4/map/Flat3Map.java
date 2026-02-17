@@ -511,6 +511,35 @@ public class Flat3Map<K, V> implements IterableMap<K, V>, Serializable, Cloneabl
     /** Serialization version */
     private static final long serialVersionUID = -6701087419741928296L;
 
+    private static final int[] equalsHits = new int[14];
+
+    static {
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> printCoverageReport()));
+    }
+
+    private static void trackBranchEquals(int id) {
+        if (id < 0 || id >= equalsHits.length) {
+            return;
+        }
+        equalsHits[id]++;
+    }
+
+    public static void printCoverageReport() {
+        System.out.println("\n========== Branch Coverage: equals() ===========");
+        int covered = 0;
+        for (int i = 0; i < equalsHits.length; i++) {
+            String name = "B" + String.format("%02d", i);
+            int h = equalsHits[i];
+            if (h > 0)
+                covered++;
+            String status = (h == 0) ? "[MISSED]" : "[HIT-" + h + "x]";
+            System.out.println(name + " : " + status);
+        }
+        double pct = equalsHits.length > 0 ? (100.0 * covered / equalsHits.length) : 0.0;
+        System.out.printf("\nCoverage: %d/%d branches (%.1f%%)\\n", covered, equalsHits.length, pct);
+        System.out.println("\n==============================================\n");
+    }
+
     /** The size of the map, used while in flat mode */
     private transient int size;
 
@@ -755,43 +784,57 @@ public class Flat3Map<K, V> implements IterableMap<K, V>, Serializable, Cloneabl
     @Override
     public boolean equals(final Object obj) {
         if (obj == this) {
+            trackBranchEquals(0);
             return true;
         }
         if (delegateMap != null) {
+            trackBranchEquals(1);
             return delegateMap.equals(obj);
         }
         if (!(obj instanceof Map)) {
+            trackBranchEquals(2);
             return false;
         }
         final Map<?, ?> other = (Map<?, ?>) obj;
         if (size != other.size()) {
+            trackBranchEquals(3);
             return false;
         }
         if (size > 0) {
+            trackBranchEquals(4);
             Object otherValue = null;
             switch (size) {  // drop through
             case 3:
+                trackBranchEquals(5);
                 if (!other.containsKey(key3)) {
+                    trackBranchEquals(6);
                     return false;
                 }
                 otherValue = other.get(key3);
                 if (!Objects.equals(value3, otherValue)) {
+                    trackBranchEquals(7);
                     return false;
                 }
             case 2:
+                trackBranchEquals(8);
                 if (!other.containsKey(key2)) {
+                    trackBranchEquals(9);
                     return false;
                 }
                 otherValue = other.get(key2);
                 if (!Objects.equals(value2, otherValue)) {
+                    trackBranchEquals(10);
                     return false;
                 }
             case 1:
+                trackBranchEquals(11);
                 if (!other.containsKey(key1)) {
+                    trackBranchEquals(12);
                     return false;
                 }
                 otherValue = other.get(key1);
                 if (!Objects.equals(value1, otherValue)) {
+                    trackBranchEquals(13);
                     return false;
                 }
             }
