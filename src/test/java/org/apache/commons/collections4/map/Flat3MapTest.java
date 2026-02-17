@@ -37,6 +37,7 @@ import org.apache.commons.collections4.BulkTest;
 import org.apache.commons.collections4.IterableMap;
 import org.apache.commons.collections4.MapIterator;
 import org.apache.commons.collections4.iterators.AbstractMapIteratorTest;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -362,16 +363,16 @@ public class Flat3MapTest<K, V> extends AbstractIterableMapTest<K, V> {
         assertFalse(map1.equals(map2));
     }
 
-//    void testCreate() throws Exception {
-//        resetEmpty();
-//        writeExternalFormToDisk(
-//            (java.io.Serializable) map,
-//            "src/test/resources/data/test/Flat3Map.emptyCollection.version4.obj");
-//        resetFull();
-//        writeExternalFormToDisk(
-//            (java.io.Serializable) map,
-//            "src/test/resources/data/test/Flat3Map.fullCollection.version4.obj");
-//    }
+    // void testCreate() throws Exception {
+    // resetEmpty();
+    // writeExternalFormToDisk(
+    // (java.io.Serializable) map,
+    // "src/test/resources/data/test/Flat3Map.emptyCollection.version4.obj");
+    // resetFull();
+    // writeExternalFormToDisk(
+    // (java.io.Serializable) map,
+    // "src/test/resources/data/test/Flat3Map.fullCollection.version4.obj");
+    // }
 
     @Test
     @SuppressWarnings("unchecked")
@@ -868,5 +869,11 @@ public class Flat3MapTest<K, V> extends AbstractIterableMapTest<K, V> {
         assertNotSame(string0, string3);
         assertNotSame(string1, string3);
         assertNotSame(string2, string3);
+    }
+
+    @AfterAll
+    public static void printBranchCoverage() {
+        System.out.println("\n");
+        Flat3Map.printCoverageReport();
     }
 }
