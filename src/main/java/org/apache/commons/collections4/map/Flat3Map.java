@@ -196,7 +196,7 @@ public class Flat3Map<K, V> implements IterableMap<K, V>, Serializable, Cloneabl
             }
             final Map.Entry<?, ?> other = (Map.Entry<?, ?>) obj;
             return Objects.equals(getKey(), other.getKey()) &&
-                   Objects.equals(getValue(), other.getValue());
+                    Objects.equals(getValue(), other.getValue());
         }
 
         @Override
@@ -205,12 +205,12 @@ public class Flat3Map<K, V> implements IterableMap<K, V>, Serializable, Cloneabl
                 throw new IllegalStateException(AbstractHashedMap.GETKEY_INVALID);
             }
             switch (index) {
-            case 3:
-                return parent.key3;
-            case 2:
-                return parent.key2;
-            case 1:
-                return parent.key1;
+                case 3:
+                    return parent.key3;
+                case 2:
+                    return parent.key2;
+                case 1:
+                    return parent.key1;
             }
             throw new IllegalStateException("Invalid map index: " + index);
         }
@@ -221,12 +221,12 @@ public class Flat3Map<K, V> implements IterableMap<K, V>, Serializable, Cloneabl
                 throw new IllegalStateException(AbstractHashedMap.GETVALUE_INVALID);
             }
             switch (index) {
-            case 3:
-                return parent.value3;
-            case 2:
-                return parent.value2;
-            case 1:
-                return parent.value1;
+                case 3:
+                    return parent.value3;
+                case 2:
+                    return parent.value2;
+                case 1:
+                    return parent.value1;
             }
             throw new IllegalStateException("Invalid map index: " + index);
         }
@@ -239,7 +239,7 @@ public class Flat3Map<K, V> implements IterableMap<K, V>, Serializable, Cloneabl
             final Object key = getKey();
             final Object value = getValue();
             return (key == null ? 0 : key.hashCode()) ^
-                   (value == null ? 0 : value.hashCode());
+                    (value == null ? 0 : value.hashCode());
         }
 
         /**
@@ -262,17 +262,17 @@ public class Flat3Map<K, V> implements IterableMap<K, V>, Serializable, Cloneabl
             }
             final V old = getValue();
             switch (index) {
-            case 3:
-                parent.value3 = value;
-                break;
-            case 2:
-                parent.value2 = value;
-                break;
-            case 1:
-                parent.value1 = value;
-                break;
-            default:
-                throw new IllegalStateException("Invalid map index: " + index);
+                case 3:
+                    parent.value3 = value;
+                    break;
+                case 2:
+                    parent.value2 = value;
+                    break;
+                case 1:
+                    parent.value1 = value;
+                    break;
+                default:
+                    throw new IllegalStateException("Invalid map index: " + index);
             }
             return old;
         }
@@ -305,12 +305,12 @@ public class Flat3Map<K, V> implements IterableMap<K, V>, Serializable, Cloneabl
                 throw new IllegalStateException(AbstractHashedMap.GETKEY_INVALID);
             }
             switch (nextIndex) {
-            case 3:
-                return parent.key3;
-            case 2:
-                return parent.key2;
-            case 1:
-                return parent.key1;
+                case 3:
+                    return parent.key3;
+                case 2:
+                    return parent.key2;
+                case 1:
+                    return parent.key1;
             }
             throw new IllegalStateException("Invalid map index: " + nextIndex);
         }
@@ -321,12 +321,12 @@ public class Flat3Map<K, V> implements IterableMap<K, V>, Serializable, Cloneabl
                 throw new IllegalStateException(AbstractHashedMap.GETVALUE_INVALID);
             }
             switch (nextIndex) {
-            case 3:
-                return parent.value3;
-            case 2:
-                return parent.value2;
-            case 1:
-                return parent.value1;
+                case 3:
+                    return parent.value3;
+                case 2:
+                    return parent.value2;
+                case 1:
+                    return parent.value1;
             }
             throw new IllegalStateException("Invalid map index: " + nextIndex);
         }
@@ -369,17 +369,17 @@ public class Flat3Map<K, V> implements IterableMap<K, V>, Serializable, Cloneabl
             }
             final V old = getValue();
             switch (nextIndex) {
-            case 3:
-                parent.value3 = value;
-                break;
-            case 2:
-                parent.value2 = value;
-                break;
-            case 1:
-                parent.value1 = value;
-                break;
-            default:
-                throw new IllegalStateException("Invalid map index: " + nextIndex);
+                case 3:
+                    parent.value3 = value;
+                    break;
+                case 2:
+                    parent.value2 = value;
+                    break;
+                case 1:
+                    parent.value1 = value;
+                    break;
+                default:
+                    throw new IllegalStateException("Invalid map index: " + nextIndex);
             }
             return old;
         }
@@ -639,34 +639,34 @@ public class Flat3Map<K, V> implements IterableMap<K, V>, Serializable, Cloneabl
         }
         if (key == null) {
             switch (size) {  // drop through
-            case 3:
-                if (key3 == null) {
-                    return true;
-                }
-            case 2:
-                if (key2 == null) {
-                    return true;
-                }
-            case 1:
-                if (key1 == null) {
-                    return true;
-                }
+                case 3:
+                    if (key3 == null) {
+                        return true;
+                    }
+                case 2:
+                    if (key2 == null) {
+                        return true;
+                    }
+                case 1:
+                    if (key1 == null) {
+                        return true;
+                    }
             }
         } else if (size > 0) {
             final int hashCode = key.hashCode();
             switch (size) {  // drop through
-            case 3:
-                if (hash3 == hashCode && key.equals(key3)) {
-                    return true;
-                }
-            case 2:
-                if (hash2 == hashCode && key.equals(key2)) {
-                    return true;
-                }
-            case 1:
-                if (hash1 == hashCode && key.equals(key1)) {
-                    return true;
-                }
+                case 3:
+                    if (hash3 == hashCode && key.equals(key3)) {
+                        return true;
+                    }
+                case 2:
+                    if (hash2 == hashCode && key.equals(key2)) {
+                        return true;
+                    }
+                case 1:
+                    if (hash1 == hashCode && key.equals(key1)) {
+                        return true;
+                    }
             }
         }
         return false;
@@ -685,33 +685,33 @@ public class Flat3Map<K, V> implements IterableMap<K, V>, Serializable, Cloneabl
         }
         if (value == null) {  // drop through
             switch (size) {
-            case 3:
-                if (value3 == null) {
-                    return true;
-                }
-            case 2:
-                if (value2 == null) {
-                    return true;
-                }
-            case 1:
-                if (value1 == null) {
-                    return true;
-                }
+                case 3:
+                    if (value3 == null) {
+                        return true;
+                    }
+                case 2:
+                    if (value2 == null) {
+                        return true;
+                    }
+                case 1:
+                    if (value1 == null) {
+                        return true;
+                    }
             }
         } else {
             switch (size) {  // drop through
-            case 3:
-                if (value.equals(value3)) {
-                    return true;
-                }
-            case 2:
-                if (value.equals(value2)) {
-                    return true;
-                }
-            case 1:
-                if (value.equals(value1)) {
-                    return true;
-                }
+                case 3:
+                    if (value.equals(value3)) {
+                        return true;
+                    }
+                case 2:
+                    if (value.equals(value2)) {
+                        return true;
+                    }
+                case 1:
+                    if (value.equals(value1)) {
+                        return true;
+                    }
             }
         }
         return false;
@@ -723,16 +723,16 @@ public class Flat3Map<K, V> implements IterableMap<K, V>, Serializable, Cloneabl
     private void convertToMap() {
         delegateMap = createDelegateMap();
         switch (size) {  // drop through
-        case 3:
-            delegateMap.put(key3, value3);
-        case 2:
-            delegateMap.put(key2, value2);
-        case 1:
-            delegateMap.put(key1, value1);
-        case 0:
-            break;
-        default:
-            throw new IllegalStateException("Invalid map index: " + size);
+            case 3:
+                delegateMap.put(key3, value3);
+            case 2:
+                delegateMap.put(key2, value2);
+            case 1:
+                delegateMap.put(key1, value1);
+            case 0:
+                break;
+            default:
+                throw new IllegalStateException("Invalid map index: " + size);
         }
 
         size = 0;
@@ -800,44 +800,50 @@ public class Flat3Map<K, V> implements IterableMap<K, V>, Serializable, Cloneabl
             trackBranchEquals(3);
             return false;
         }
-        if (size > 0) {
-            trackBranchEquals(4);
-            Object otherValue = null;
-            switch (size) {  // drop through
+        if (size == 0) {
+            return true;
+        }
+        trackBranchEquals(4);
+        return compareAllEntries(other);
+    }
+
+    /**
+     * Helper: compares all entries based on current size.
+     */
+    private boolean compareAllEntries(final Map<?, ?> other) {
+        switch (size) {
             case 3:
                 trackBranchEquals(5);
-                if (!other.containsKey(key3)) {
-                    trackBranchEquals(6);
-                    return false;
-                }
-                otherValue = other.get(key3);
-                if (!Objects.equals(value3, otherValue)) {
-                    trackBranchEquals(7);
+                if (!entryMatches(key3, value3, other, 6, 7)) {
                     return false;
                 }
             case 2:
                 trackBranchEquals(8);
-                if (!other.containsKey(key2)) {
-                    trackBranchEquals(9);
-                    return false;
-                }
-                otherValue = other.get(key2);
-                if (!Objects.equals(value2, otherValue)) {
-                    trackBranchEquals(10);
+                if (!entryMatches(key2, value2, other, 9, 10)) {
                     return false;
                 }
             case 1:
                 trackBranchEquals(11);
-                if (!other.containsKey(key1)) {
-                    trackBranchEquals(12);
+                if (!entryMatches(key1, value1, other, 12, 13)) {
                     return false;
                 }
-                otherValue = other.get(key1);
-                if (!Objects.equals(value1, otherValue)) {
-                    trackBranchEquals(13);
-                    return false;
-                }
-            }
+        }
+        return true;
+    }
+
+    /**
+     * Helper: checks if key-value pair exists in other map with matching value.
+     */
+    private boolean entryMatches(final K key, final V value, final Map<?, ?> other,
+            final int keyBranch, final int valueBranch) {
+        if (!other.containsKey(key)) {
+            trackBranchEquals(keyBranch);
+            return false;
+        }
+        final Object otherValue = other.get(key);
+        if (!Objects.equals(value, otherValue)) {
+            trackBranchEquals(valueBranch);
+            return false;
         }
         return true;
     }
@@ -855,36 +861,36 @@ public class Flat3Map<K, V> implements IterableMap<K, V>, Serializable, Cloneabl
         }
         if (key == null) {
             switch (size) {
-            // drop through
-            case 3:
-                if (key3 == null) {
-                    return value3;
-                }
-            case 2:
-                if (key2 == null) {
-                    return value2;
-                }
-            case 1:
-                if (key1 == null) {
-                    return value1;
-                }
+                // drop through
+                case 3:
+                    if (key3 == null) {
+                        return value3;
+                    }
+                case 2:
+                    if (key2 == null) {
+                        return value2;
+                    }
+                case 1:
+                    if (key1 == null) {
+                        return value1;
+                    }
             }
         } else if (size > 0) {
             final int hashCode = key.hashCode();
             switch (size) {
-            // drop through
-            case 3:
-                if (hash3 == hashCode && key.equals(key3)) {
-                    return value3;
-                }
-            case 2:
-                if (hash2 == hashCode && key.equals(key2)) {
-                    return value2;
-                }
-            case 1:
-                if (hash1 == hashCode && key.equals(key1)) {
-                    return value1;
-                }
+                // drop through
+                case 3:
+                    if (hash3 == hashCode && key.equals(key3)) {
+                        return value3;
+                    }
+                case 2:
+                    if (hash2 == hashCode && key.equals(key2)) {
+                        return value2;
+                    }
+                case 1:
+                    if (hash1 == hashCode && key.equals(key1)) {
+                        return value1;
+                    }
             }
         }
         return null;
@@ -902,16 +908,16 @@ public class Flat3Map<K, V> implements IterableMap<K, V>, Serializable, Cloneabl
         }
         int total = 0;
         switch (size) {  // drop through
-        case 3:
-            total += hash3 ^ (value3 == null ? 0 : value3.hashCode());
-        case 2:
-            total += hash2 ^ (value2 == null ? 0 : value2.hashCode());
-        case 1:
-            total += hash1 ^ (value1 == null ? 0 : value1.hashCode());
-        case 0:
-            break;
-        default:
-            throw new IllegalStateException("Invalid map index: " + size);
+            case 3:
+                total += hash3 ^ (value3 == null ? 0 : value3.hashCode());
+            case 2:
+                total += hash2 ^ (value2 == null ? 0 : value2.hashCode());
+            case 1:
+                total += hash1 ^ (value1 == null ? 0 : value1.hashCode());
+            case 0:
+                break;
+            default:
+                throw new IllegalStateException("Invalid map index: " + size);
         }
         return total;
     }
@@ -979,70 +985,70 @@ public class Flat3Map<K, V> implements IterableMap<K, V>, Serializable, Cloneabl
         // change existing mapping
         if (key == null) {
             switch (size) {  // drop through
-            case 3:
-                if (key3 == null) {
-                    final V old = value3;
-                    value3 = value;
-                    return old;
-                }
-            case 2:
-                if (key2 == null) {
-                    final V old = value2;
-                    value2 = value;
-                    return old;
-                }
-            case 1:
-                if (key1 == null) {
-                    final V old = value1;
-                    value1 = value;
-                    return old;
-                }
+                case 3:
+                    if (key3 == null) {
+                        final V old = value3;
+                        value3 = value;
+                        return old;
+                    }
+                case 2:
+                    if (key2 == null) {
+                        final V old = value2;
+                        value2 = value;
+                        return old;
+                    }
+                case 1:
+                    if (key1 == null) {
+                        final V old = value1;
+                        value1 = value;
+                        return old;
+                    }
             }
         } else if (size > 0) {
             final int hashCode = key.hashCode();
             switch (size) {  // drop through
-            case 3:
-                if (hash3 == hashCode && key.equals(key3)) {
-                    final V old = value3;
-                    value3 = value;
-                    return old;
-                }
-            case 2:
-                if (hash2 == hashCode && key.equals(key2)) {
-                    final V old = value2;
-                    value2 = value;
-                    return old;
-                }
-            case 1:
-                if (hash1 == hashCode && key.equals(key1)) {
-                    final V old = value1;
-                    value1 = value;
-                    return old;
-                }
+                case 3:
+                    if (hash3 == hashCode && key.equals(key3)) {
+                        final V old = value3;
+                        value3 = value;
+                        return old;
+                    }
+                case 2:
+                    if (hash2 == hashCode && key.equals(key2)) {
+                        final V old = value2;
+                        value2 = value;
+                        return old;
+                    }
+                case 1:
+                    if (hash1 == hashCode && key.equals(key1)) {
+                        final V old = value1;
+                        value1 = value;
+                        return old;
+                    }
             }
         }
 
         // add new mapping
         switch (size) {
-        case 2:
-            hash3 = key == null ? 0 : key.hashCode();
-            key3 = key;
-            value3 = value;
-            break;
-        case 1:
-            hash2 = key == null ? 0 : key.hashCode();
-            key2 = key;
-            value2 = value;
-            break;
-        case 0:
-            hash1 = key == null ? 0 : key.hashCode();
-            key1 = key;
-            value1 = value;
-            break;
-        default:
-            convertToMap();
-            delegateMap.put(key, value);
-            return null;
+            case 2:
+                hash3 = key == null ? 0 : key.hashCode();
+                key3 = key;
+                value3 = value;
+                break;
+            case 1:
+                hash2 = key == null ? 0 : key.hashCode();
+                key2 = key;
+                value2 = value;
+                break;
+            case 0:
+                hash1 = key == null ? 0 : key.hashCode();
+                key1 = key;
+                value1 = value;
+                break;
+            default:
+                convertToMap();
+                delegateMap.put(key, value);
+                return null;
         }
         size++;
         return null;
@@ -1109,134 +1115,134 @@ public class Flat3Map<K, V> implements IterableMap<K, V>, Serializable, Cloneabl
         }
         if (key == null) {
             switch (size) {  // drop through
-            case 3:
-                if (key3 == null) {
-                    final V old = value3;
-                    hash3 = 0;
-                    key3 = null;
-                    value3 = null;
-                    size = 2;
-                    return old;
-                }
-                if (key2 == null) {
-                    final V old = value2;
-                    hash2 = hash3;
-                    key2 = key3;
-                    value2 = value3;
-                    hash3 = 0;
-                    key3 = null;
-                    value3 = null;
-                    size = 2;
-                    return old;
-                }
-                if (key1 == null) {
-                    final V old = value1;
-                    hash1 = hash3;
-                    key1 = key3;
-                    value1 = value3;
-                    hash3 = 0;
-                    key3 = null;
-                    value3 = null;
-                    size = 2;
-                    return old;
-                }
-                return null;
-            case 2:
-                if (key2 == null) {
-                    final V old = value2;
-                    hash2 = 0;
-                    key2 = null;
-                    value2 = null;
-                    size = 1;
-                    return old;
-                }
-                if (key1 == null) {
-                    final V old = value1;
-                    hash1 = hash2;
-                    key1 = key2;
-                    value1 = value2;
-                    hash2 = 0;
-                    key2 = null;
-                    value2 = null;
-                    size = 1;
-                    return old;
-                }
-                return null;
-            case 1:
-                if (key1 == null) {
-                    final V old = value1;
-                    hash1 = 0;
-                    key1 = null;
-                    value1 = null;
-                    size = 0;
-                    return old;
-                }
+                case 3:
+                    if (key3 == null) {
+                        final V old = value3;
+                        hash3 = 0;
+                        key3 = null;
+                        value3 = null;
+                        size = 2;
+                        return old;
+                    }
+                    if (key2 == null) {
+                        final V old = value2;
+                        hash2 = hash3;
+                        key2 = key3;
+                        value2 = value3;
+                        hash3 = 0;
+                        key3 = null;
+                        value3 = null;
+                        size = 2;
+                        return old;
+                    }
+                    if (key1 == null) {
+                        final V old = value1;
+                        hash1 = hash3;
+                        key1 = key3;
+                        value1 = value3;
+                        hash3 = 0;
+                        key3 = null;
+                        value3 = null;
+                        size = 2;
+                        return old;
+                    }
+                    return null;
+                case 2:
+                    if (key2 == null) {
+                        final V old = value2;
+                        hash2 = 0;
+                        key2 = null;
+                        value2 = null;
+                        size = 1;
+                        return old;
+                    }
+                    if (key1 == null) {
+                        final V old = value1;
+                        hash1 = hash2;
+                        key1 = key2;
+                        value1 = value2;
+                        hash2 = 0;
+                        key2 = null;
+                        value2 = null;
+                        size = 1;
+                        return old;
+                    }
+                    return null;
+                case 1:
+                    if (key1 == null) {
+                        final V old = value1;
+                        hash1 = 0;
+                        key1 = null;
+                        value1 = null;
+                        size = 0;
+                        return old;
+                    }
             }
         } else if (size > 0) {
             final int hashCode = key.hashCode();
             switch (size) {  // drop through
-            case 3:
-                if (hash3 == hashCode && key.equals(key3)) {
-                    final V old = value3;
-                    hash3 = 0;
-                    key3 = null;
-                    value3 = null;
-                    size = 2;
-                    return old;
-                }
-                if (hash2 == hashCode && key.equals(key2)) {
-                    final V old = value2;
-                    hash2 = hash3;
-                    key2 = key3;
-                    value2 = value3;
-                    hash3 = 0;
-                    key3 = null;
-                    value3 = null;
-                    size = 2;
-                    return old;
-                }
-                if (hash1 == hashCode && key.equals(key1)) {
-                    final V old = value1;
-                    hash1 = hash3;
-                    key1 = key3;
-                    value1 = value3;
-                    hash3 = 0;
-                    key3 = null;
-                    value3 = null;
-                    size = 2;
-                    return old;
-                }
-                return null;
-            case 2:
-                if (hash2 == hashCode && key.equals(key2)) {
-                    final V old = value2;
-                    hash2 = 0;
-                    key2 = null;
-                    value2 = null;
-                    size = 1;
-                    return old;
-                }
-                if (hash1 == hashCode && key.equals(key1)) {
-                    final V old = value1;
-                    hash1 = hash2;
-                    key1 = key2;
-                    value1 = value2;
-                    hash2 = 0;
-                    key2 = null;
-                    value2 = null;
-                    size = 1;
-                    return old;
-                }
-                return null;
-            case 1:
-                if (hash1 == hashCode && key.equals(key1)) {
-                    final V old = value1;
-                    hash1 = 0;
-                    key1 = null;
-                    value1 = null;
-                    size = 0;
-                    return old;
-                }
+                case 3:
+                    if (hash3 == hashCode && key.equals(key3)) {
+                        final V old = value3;
+                        hash3 = 0;
+                        key3 = null;
+                        value3 = null;
+                        size = 2;
+                        return old;
+                    }
+                    if (hash2 == hashCode && key.equals(key2)) {
+                        final V old = value2;
+                        hash2 = hash3;
+                        key2 = key3;
+                        value2 = value3;
+                        hash3 = 0;
+                        key3 = null;
+                        value3 = null;
+                        size = 2;
+                        return old;
+                    }
+                    if (hash1 == hashCode && key.equals(key1)) {
+                        final V old = value1;
+                        hash1 = hash3;
+                        key1 = key3;
+                        value1 = value3;
+                        hash3 = 0;
+                        key3 = null;
+                        value3 = null;
+                        size = 2;
+                        return old;
+                    }
+                    return null;
+                case 2:
+                    if (hash2 == hashCode && key.equals(key2)) {
+                        final V old = value2;
+                        hash2 = 0;
+                        key2 = null;
+                        value2 = null;
+                        size = 1;
+                        return old;
+                    }
+                    if (hash1 == hashCode && key.equals(key1)) {
+                        final V old = value1;
+                        hash1 = hash2;
+                        key1 = key2;
+                        value1 = value2;
+                        hash2 = 0;
+                        key2 = null;
+                        value2 = null;
+                        size = 1;
+                        return old;
+                    }
+                    return null;
+                case 1:
+                    if (hash1 == hashCode && key.equals(key1)) {
+                        final V old = value1;
+                        hash1 = 0;
+                        key1 = null;
+                        value1 = null;
+                        size = 0;
+                        return old;
+                    }
             }
         }
         return null;
@@ -1271,24 +1277,24 @@ public class Flat3Map<K, V> implements IterableMap<K, V>, Serializable, Cloneabl
         final StringBuilder buf = new StringBuilder(128);
         buf.append('{');
         switch (size) {  // drop through
-        case 3:
-            buf.append(key3 == this ? "(this Map)" : key3);
-            buf.append('=');
-            buf.append(value3 == this ? "(this Map)" : value3);
-            buf.append(CollectionUtils.COMMA);
-        case 2:
-            buf.append(key2 == this ? "(this Map)" : key2);
-            buf.append('=');
-            buf.append(value2 == this ? "(this Map)" : value2);
-            buf.append(CollectionUtils.COMMA);
-        case 1:
-            buf.append(key1 == this ? "(this Map)" : key1);
-            buf.append('=');
-            buf.append(value1 == this ? "(this Map)" : value1);
-            break;
-        // case 0: has already been dealt with
-        default:
-            throw new IllegalStateException("Invalid map index: " + size);
+            case 3:
+                buf.append(key3 == this ? "(this Map)" : key3);
+                buf.append('=');
+                buf.append(value3 == this ? "(this Map)" : value3);
+                buf.append(CollectionUtils.COMMA);
+            case 2:
+                buf.append(key2 == this ? "(this Map)" : key2);
+                buf.append('=');
+                buf.append(value2 == this ? "(this Map)" : value2);
+                buf.append(CollectionUtils.COMMA);
+            case 1:
+                buf.append(key1 == this ? "(this Map)" : key1);
+                buf.append('=');
+                buf.append(value1 == this ? "(this Map)" : value1);
+                break;
+            // case 0: has already been dealt with
+            default:
+                throw new IllegalStateException("Invalid map index: " + size);
         }
         buf.append('}');
         return buf.toString();
