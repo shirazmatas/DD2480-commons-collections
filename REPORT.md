@@ -68,3 +68,22 @@ git diff ba48e2013f589f86b506a312093d12128160e2b6 2c916245cbe75df875ffc976a2dc5e
 ```
 
 The coverage measurement is reasonably accurate as it records the number of times every branch point was executed where it is possible to add an additional line of code to increment the counter. Some constructs do not support multiple lines of code, such as in-line conditionals or logical operators. These need to be manually converted to if-else statements for accurate measurement. Otherwise, the results are identical to the external tool. However, it is not particularly scalable because the functions themselves need to be changed, and the output is not user friendly.
+
+### Improvement
+
+TODO
+
+## Way of working
+
+Our way of working feels stable and well-established, and we have progressed from principles established on the Essence checklist to working well.
+
+The team has established the principles, constraints, and approaches for our collaboration. The foundation has also been established: we have selected the necessary tools (e.g. version control software and IDE) and practices (e.g. rules for issues and commits) and integrated them into our way of working. We discussed our gaps in knowledge and experience beforehand as well, so that we were aware of our limitations.
+
+At the in use and in place level, the practices and tools we established are actively applied to enable work and support communication. We believe that we have reached the level of working well, as we have developed strong familiarity with the processes so that they flow smoothly with minimal effort and most tasks can be completed without extra coordination.
+
+Although we have reflected on and adapted our way of working somewhat between the last projects, there remains room for further examination of each practice to refine our collaboration. For instance, some of our documentation could be more standardized and we could make use of more tools provided by GitHub, such as assigning people to tasks and code reviews.
+
+## Conclusion
+
+Overall, working with the Commons Collections project gave us a realistic view of how you handle a larger open-source codebase. Onboarding was smooth since the project builds and runs with standard tools. When we looked at cyclomatic complexity, it became clear that the most complex methods are also the hardest to understand and test, which is why refactoring and breaking logic into smaller pieces can make a big difference.
+The coverage work was also very useful. Using an existing coverage tool was straightforward, and building our own DIY branch coverage tool made us understand what coverage numbers actually mean. Finally, improving coverage by writing targeted tests aimed at specific missed branches was much more effective than adding random tests. Overall, it was a good learning experience in testing, measuring, and improving real production code.
