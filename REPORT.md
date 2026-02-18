@@ -46,3 +46,25 @@ The purpose of all the functions is related to their high CC, as seen in the tab
 Lizard does not count all exceptions as separate branches. This is reasonable because an exception thrown directly in the method is always guaranteed to be thrown, and therefore does not result in a new branch. This is the case for `getMiddleSnake`. A checked exception within a called function could result in a new branch, but this is not present in any of the functions.
 
 The documentation is generally appropriate and sufficient within all functions. For more involved algorithms, there are either extensive comments or an external link to a detailed explanation. For functions that only have high CC because of a lot of simple checks, the documentation is more minimal but the functions are still not too difficult to understand.
+
+## Refactoring
+
+TODO
+
+## Coverage
+
+### External tool
+
+The tool we used was IntelliJ IDEA’s built-in code coverage for Java plugin. This tool is well integrated into the IDE and can be run in one click. The IDE then highlights the lines covered in each file and can generate a HTML report. It was not always obvious where to find certain options, since the IDE is so complex, but the overall experience was relatively smooth.
+
+### Internal tool
+
+Our own tool is very simple. Before any tests are run, an array of counters is initialized. In the method being tested, each branch manually increments the counter at the index corresponding to the number assigned to the branch. When all tests are complete, the contents of the array are printed to the console, showing how many times the branch was executed. The tool can be used for any kind of branching where a line of code can be manually added.
+
+To view the implementation:
+```
+git checkout coverage-measurement
+git diff ba48e2013f589f86b506a312093d12128160e2b6 2c916245cbe75df875ffc976a2dc5e854509ff3d
+```
+
+The coverage measurement is reasonably accurate as it records the number of times every branch point was executed where it is possible to add an additional line of code to increment the counter. Some constructs do not support multiple lines of code, such as in-line conditionals or logical operators. These need to be manually converted to if-else statements for accurate measurement. Otherwise, the results are identical to the external tool. However, it is not particularly scalable because the functions themselves need to be changed, and the output is not user friendly.
