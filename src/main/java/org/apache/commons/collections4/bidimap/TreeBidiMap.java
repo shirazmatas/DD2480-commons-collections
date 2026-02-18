@@ -2083,101 +2083,75 @@ public class TreeBidiMap<K extends Comparable<K>, V extends Comparable<V>>
 
     /**
      * Swaps two nodes (except for their content), taking care of
-     * special cases where one is the other's parent ... hey, it
-     * happens.
+     * special cases where one is the other's parent.
      *
      * @param x one node
      * @param y another node
-     * @param dataElement  the KEY or VALUE int
+     * @param dataElement  the {@link DataElement#KEY key}
+     *                     or the {@link DataElement#VALUE value}
      */
     private void swapPosition(final Node<K, V> x, final Node<K, V> y, final DataElement dataElement) {
-        // Save initial values.
         final Node<K, V> xFormerParent = x.getParent(dataElement);
-        final Node<K, V> xFormerLeftChild = x.getLeft(dataElement);
-        final Node<K, V> xFormerRightChild = x.getRight(dataElement);
+        final Node<K, V> xFormerLeft = x.getLeft(dataElement);
+        final Node<K, V> xFormerRight = x.getRight(dataElement);
+
         final Node<K, V> yFormerParent = y.getParent(dataElement);
-        final Node<K, V> yFormerLeftChild = y.getLeft(dataElement);
-        final Node<K, V> yFormerRightChild = y.getRight(dataElement);
-        final boolean xWasLeftChild =
-                x.getParent(dataElement) != null && x == x.getParent(dataElement).getLeft(dataElement);
-        final boolean yWasLeftChild =
-                y.getParent(dataElement) != null && y == y.getParent(dataElement).getLeft(dataElement);
+        final Node<K, V> yFormerLeft = y.getLeft(dataElement);
+        final Node<K, V> yFormerRight = y.getRight(dataElement);
 
-        // Swap, handling special cases of one being the other's parent.
-        if (x == yFormerParent) { // x was y's parent
-            x.setParent(y, dataElement);
+        // swap links
+        relinkNode(x, y, yFormerParent, yFormerLeft, yFormerRight, dataElement);
+        relinkNode(y, x, xFormerParent, xFormerLeft, xFormerRight, dataElement);
 
-            if (yWasLeftChild) {
-                y.setLeft(x, dataElement);
-                y.setRight(xFormerRightChild, dataElement);
-            } else {
-                y.setRight(x, dataElement);
-                y.setLeft(xFormerLeftChild, dataElement);
-            }
-        } else {
-            x.setParent(yFormerParent, dataElement);
-
-            if (yFormerParent != null) {
-                if (yWasLeftChild) {
-                    yFormerParent.setLeft(x, dataElement);
-                } else {
-                    yFormerParent.setRight(x, dataElement);
-                }
-            }
-
-            y.setLeft(xFormerLeftChild, dataElement);
-            y.setRight(xFormerRightChild, dataElement);
-        }
-
-        if (y == xFormerParent) { // y was x's parent
-            y.setParent(x, dataElement);
-
-            if (xWasLeftChild) {
-                x.setLeft(y, dataElement);
-                x.setRight(yFormerRightChild, dataElement);
-            } else {
-                x.setRight(y, dataElement);
-                x.setLeft(yFormerLeftChild, dataElement);
-            }
-        } else {
-            y.setParent(xFormerParent, dataElement);
-
-            if (xFormerParent != null) {
-                if (xWasLeftChild) {
-                    xFormerParent.setLeft(y, dataElement);
-                } else {
-                    xFormerParent.setRight(y, dataElement);
-                }
-            }
-
-            x.setLeft(yFormerLeftChild, dataElement);
-            x.setRight(yFormerRightChild, dataElement);
-        }
-
-        // Fix children's parent pointers
-        if (x.getLeft(dataElement) != null) {
-            x.getLeft(dataElement).setParent(x, dataElement);
-        }
-
-        if (x.getRight(dataElement) != null) {
-            x.getRight(dataElement).setParent(x, dataElement);
-        }
-
-        if (y.getLeft(dataElement) != null) {
-            y.getLeft(dataElement).setParent(y, dataElement);
-        }
-
-        if (y.getRight(dataElement) != null) {
-            y.getRight(dataElement).setParent(y, dataElement);
-        }
-
+        // swap colors
         x.swapColors(y, dataElement);
 
-        // Check if root changed
+        // update root node if necessary
         if (rootNode[dataElement.ordinal()] == x) {
             rootNode[dataElement.ordinal()] = y;
         } else if (rootNode[dataElement.ordinal()] == y) {
             rootNode[dataElement.ordinal()] = x;
+        }
+    }
+
+    /**
+     * Re-links the node to the structural position formerly occupied by
+     * the other node, handling cases where the nodes are directly related.
+     * The links of the parent and children are also updated.
+     *
+     * @param node the node to relocate
+     * @param other the node formerly in that position
+     * @param otherParent the parent of the other node
+     * @param otherLeft the left child of the other node
+     * @param otherRight the right child of the other node
+     * @param dataElement the {@link DataElement#KEY key}
+     *                    or the {@link DataElement#VALUE value}
+     */
+    private void relinkNode(final Node<K, V> node, final Node<K, V> other, final Node<K, V> otherParent, final Node<K, V> otherLeft, final Node<K, V> otherRight, final DataElement dataElement) {
+        // set new parent and children
+        final Node<K, V> newParent = otherParent == node ? other : otherParent;
+        final Node<K, V> newLeft = otherLeft == node ? other : otherLeft;
+        final Node<K, V> newRight = otherRight == node ? other : otherRight;
+
+        node.setParent(newParent, dataElement);
+        node.setLeft(newLeft, dataElement);
+        node.setRight(newRight, dataElement);
+
+        // update link of parent
+        if (newParent != null) {
+            if (newParent.getLeft(dataElement) == other) {
+                newParent.setLeft(node, dataElement);
+            } else if (newParent.getRight(dataElement) == other) {
+                newParent.setRight(node, dataElement);
+            }
+        }
+
+        // update links of children
+        if (newLeft != null) {
+            newLeft.setParent(node, dataElement);
+        }
+        if (newRight != null) {
+            newRight.setParent(node, dataElement);
         }
     }
 
