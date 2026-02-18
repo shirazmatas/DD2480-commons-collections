@@ -1794,6 +1794,16 @@ public abstract class AbstractPatriciaTrie<K, V> extends AbstractBitwiseTrie<K, 
         return nextEntryImpl(node.predecessor, node, null);
     }
 
+    public static boolean[] coverageFlags = new boolean[20];
+
+    public static void printCoverage() {
+        System.out.println("-------------------------");
+        System.out.println("COVERAGE");
+        for (int i = 0; i < coverageFlags.length; i++) {
+            System.out.println("Branch " + i + ": " + (coverageFlags[i] ? "HIT" : "MISS"));
+        }
+        System.out.println("-------------------------");
+    }
     /**
      * Scans for the next node, starting at the specified point, and using 'previous'
      * as a hint that the last node we returned was 'previous' (so we know not to return
@@ -1836,23 +1846,30 @@ public abstract class AbstractPatriciaTrie<K, V> extends AbstractBitwiseTrie<K, 
         // the first check, otherwise we know we've already looked
         // at the left.
         if (previous == null || start != previous.predecessor) {
+            coverageFlags[0] = true;
             while (!current.left.isEmpty()) {
                 // stop traversing if we've already
                 // returned the left of this node.
+                coverageFlags[1] = true;
                 if (previous == current.left) {
+                    coverageFlags[2] = true;
                     break;
                 }
 
                 if (isValidUplink(current.left, current)) {
+                    coverageFlags[3] = true;
                     return current.left;
                 }
-
                 current = current.left;
             }
+            coverageFlags[4] = true;
+        } else {
+            coverageFlags[5] = true;
         }
 
         // If there's no data at all, exit.
         if (current.isEmpty()) {
+            coverageFlags[6] = true;
             return null;
         }
 
@@ -1866,25 +1883,31 @@ public abstract class AbstractPatriciaTrie<K, V> extends AbstractBitwiseTrie<K, 
         //       null <-- 'current'
         //
         if (current.right == null) {
+            coverageFlags[7] = true;
             return null;
         }
 
         // If nothing valid on the left, try the right.
         if (previous != current.right) {
             // See if it immediately is valid.
+            coverageFlags[8] = true;
             if (isValidUplink(current.right, current)) {
+                coverageFlags[9] = true;
                 return current.right;
             }
 
             // Must search on the right's side if it wasn't initially valid.
+            coverageFlags[10] = true;
             return nextEntryImpl(current.right, previous, tree);
         }
 
         // Neither left nor right are valid, find the first parent
         // whose child did not come from the right & traverse it.
         while (current == current.parent.right) {
+            coverageFlags[11] = true;
             // If we're going to traverse to above the subtree, stop.
             if (current == tree) {
+                coverageFlags[12] = true;
                 return null;
             }
 
@@ -1893,26 +1916,31 @@ public abstract class AbstractPatriciaTrie<K, V> extends AbstractBitwiseTrie<K, 
 
         // If we're on the top of the subtree, we can't go any higher.
         if (current == tree) {
+            coverageFlags[13] = true;
             return null;
         }
 
         // If there's no right, the parent must be root, so we're done.
         if (current.parent.right == null) {
+            coverageFlags[14] = true;
             return null;
         }
 
         // If the parent's right points to itself, we've found one.
         if (previous != current.parent.right
                 && isValidUplink(current.parent.right, current.parent)) {
+            coverageFlags[15] = true;
             return current.parent.right;
         }
 
         // If the parent's right is itself, there can't be any more nodes.
         if (current.parent.right == current.parent) {
+            coverageFlags[16] = true;
             return null;
         }
 
         // We need to traverse down the parent's right's path.
+        coverageFlags[17] = true;
         return nextEntryImpl(current.parent.right, previous, tree);
     }
 

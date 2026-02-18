@@ -37,6 +37,7 @@ import java.util.SortedMap;
 import org.apache.commons.collections4.Trie;
 import org.apache.commons.collections4.map.AbstractSortedMapTest;
 import org.apache.commons.lang3.StringUtils;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -287,6 +288,7 @@ public class PatriciaTrieTest<V> extends AbstractSortedMapTest<String, V> {
                 () -> "got a last key: " + map6.lastKey());
 
         iterator = map.values().iterator();
+        trie.printCoverage();
         assertFalse(iterator.hasNext());
     }
 
