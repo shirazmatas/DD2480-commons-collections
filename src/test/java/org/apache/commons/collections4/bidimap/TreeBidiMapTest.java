@@ -16,14 +16,43 @@
  */
 package org.apache.commons.collections4.bidimap;
 
+import static org.apache.commons.collections4.bidimap.TreeBidiMap.coverageCounter;
+
 import java.util.TreeMap;
 
 import org.apache.commons.collections4.BidiMap;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+
 
 /**
  * JUnit tests.
  */
 public class TreeBidiMapTest<K extends Comparable<K>, V extends Comparable<V>> extends AbstractOrderedBidiMapTest<K, V> {
+
+    @BeforeAll
+    public static void beforeAllTests() {
+        coverageCounter = new int[32];
+    }
+
+    @AfterAll
+    public static void afterAllTests() {
+        System.out.println("\n========== Branch Coverage: swapPosition() ===========");
+        int covered = 0;
+
+        for (int i = 0; i < coverageCounter.length; i++) {
+            if (coverageCounter[i] > 0) {
+                covered++;
+            }
+            final String name = "B" + String.format("%02d", i);
+            final String status = (coverageCounter[i] == 0) ? "[MISSED]" : "[HIT-" + coverageCounter[i] + "x]";
+            System.out.println(name + " : " + status);
+        }
+
+        final double percent = 100.0 * covered / coverageCounter.length;
+        System.out.printf("\nCoverage: %d/%d branches (%.1f%%)\\n", covered, coverageCounter.length, percent);
+        System.out.println("\n==============================================\n");
+    }
 
     @Override
     public String getCompatibilityVersion() {

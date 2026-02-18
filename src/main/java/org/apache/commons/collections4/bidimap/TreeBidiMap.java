@@ -2081,6 +2081,8 @@ public class TreeBidiMap<K extends Comparable<K>, V extends Comparable<V>>
         return nodeCount;
     }
 
+    public static int[] coverageCounter;
+
     /**
      * Swaps two nodes (except for their content), taking care of
      * special cases where one is the other's parent ... hey, it
@@ -2091,6 +2093,8 @@ public class TreeBidiMap<K extends Comparable<K>, V extends Comparable<V>>
      * @param dataElement  the KEY or VALUE int
      */
     private void swapPosition(final Node<K, V> x, final Node<K, V> y, final DataElement dataElement) {
+        coverageCounter[0]++;
+
         // Save initial values.
         final Node<K, V> xFormerParent = x.getParent(dataElement);
         final Node<K, V> xFormerLeftChild = x.getLeft(dataElement);
@@ -2098,31 +2102,52 @@ public class TreeBidiMap<K extends Comparable<K>, V extends Comparable<V>>
         final Node<K, V> yFormerParent = y.getParent(dataElement);
         final Node<K, V> yFormerLeftChild = y.getLeft(dataElement);
         final Node<K, V> yFormerRightChild = y.getRight(dataElement);
-        final boolean xWasLeftChild =
-                x.getParent(dataElement) != null && x == x.getParent(dataElement).getLeft(dataElement);
-        final boolean yWasLeftChild =
-                y.getParent(dataElement) != null && y == y.getParent(dataElement).getLeft(dataElement);
+        final boolean xWasLeftChild;
+        if (x.getParent(dataElement) != null) {
+            coverageCounter[1]++;
+            xWasLeftChild = x == x.getParent(dataElement).getLeft(dataElement);
+        } else {
+            coverageCounter[2]++;
+            xWasLeftChild = false;
+        }
+        final boolean yWasLeftChild;
+        if (y.getParent(dataElement) != null) {
+            coverageCounter[3]++;
+            yWasLeftChild = y == y.getParent(dataElement).getLeft(dataElement);
+        } else {
+            coverageCounter[4]++;
+            yWasLeftChild = false;
+        }
 
         // Swap, handling special cases of one being the other's parent.
         if (x == yFormerParent) { // x was y's parent
+            coverageCounter[5]++;
             x.setParent(y, dataElement);
 
             if (yWasLeftChild) {
+                coverageCounter[6]++;
                 y.setLeft(x, dataElement);
                 y.setRight(xFormerRightChild, dataElement);
             } else {
+                coverageCounter[7]++;
                 y.setRight(x, dataElement);
                 y.setLeft(xFormerLeftChild, dataElement);
             }
         } else {
+            coverageCounter[8]++;
             x.setParent(yFormerParent, dataElement);
 
             if (yFormerParent != null) {
+                coverageCounter[9]++;
                 if (yWasLeftChild) {
+                    coverageCounter[10]++;
                     yFormerParent.setLeft(x, dataElement);
                 } else {
+                    coverageCounter[11]++;
                     yFormerParent.setRight(x, dataElement);
                 }
+            } else {
+                coverageCounter[12]++;
             }
 
             y.setLeft(xFormerLeftChild, dataElement);
@@ -2130,24 +2155,33 @@ public class TreeBidiMap<K extends Comparable<K>, V extends Comparable<V>>
         }
 
         if (y == xFormerParent) { // y was x's parent
+            coverageCounter[13]++;
             y.setParent(x, dataElement);
 
             if (xWasLeftChild) {
+                coverageCounter[14]++;
                 x.setLeft(y, dataElement);
                 x.setRight(yFormerRightChild, dataElement);
             } else {
+                coverageCounter[15]++;
                 x.setRight(y, dataElement);
                 x.setLeft(yFormerLeftChild, dataElement);
             }
         } else {
+            coverageCounter[16]++;
             y.setParent(xFormerParent, dataElement);
 
             if (xFormerParent != null) {
+                coverageCounter[17]++;
                 if (xWasLeftChild) {
+                    coverageCounter[18]++;
                     xFormerParent.setLeft(y, dataElement);
                 } else {
+                    coverageCounter[19]++;
                     xFormerParent.setRight(y, dataElement);
                 }
+            } else {
+                coverageCounter[20]++;
             }
 
             x.setLeft(yFormerLeftChild, dataElement);
@@ -2156,28 +2190,44 @@ public class TreeBidiMap<K extends Comparable<K>, V extends Comparable<V>>
 
         // Fix children's parent pointers
         if (x.getLeft(dataElement) != null) {
+            coverageCounter[21]++;
             x.getLeft(dataElement).setParent(x, dataElement);
+        } else {
+            coverageCounter[22]++;
         }
 
         if (x.getRight(dataElement) != null) {
+            coverageCounter[23]++;
             x.getRight(dataElement).setParent(x, dataElement);
+        } else {
+            coverageCounter[24]++;
         }
 
         if (y.getLeft(dataElement) != null) {
+            coverageCounter[25]++;
             y.getLeft(dataElement).setParent(y, dataElement);
+        } else {
+            coverageCounter[26]++;
         }
 
         if (y.getRight(dataElement) != null) {
+            coverageCounter[27]++;
             y.getRight(dataElement).setParent(y, dataElement);
+        } else {
+            coverageCounter[28]++;
         }
 
         x.swapColors(y, dataElement);
 
         // Check if root changed
         if (rootNode[dataElement.ordinal()] == x) {
+            coverageCounter[29]++;
             rootNode[dataElement.ordinal()] = y;
         } else if (rootNode[dataElement.ordinal()] == y) {
+            coverageCounter[30]++;
             rootNode[dataElement.ordinal()] = x;
+        } else {
+            coverageCounter[31]++;
         }
     }
 
