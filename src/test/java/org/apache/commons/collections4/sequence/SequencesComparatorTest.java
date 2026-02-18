@@ -16,7 +16,7 @@
  */
 package org.apache.commons.collections4.sequence;
 
-import static org.apache.commons.collections4.bidimap.TreeBidiMap.coverageCounter;
+import static org.apache.commons.collections4.sequence.SequencesComparator.coverageCounter;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -78,7 +78,7 @@ class SequencesComparatorTest {
     }
     @BeforeAll
     public static void beforeAllTests() {
-        coverageCounter = new int[54];
+        coverageCounter = new int[21];
     }
 
     @AfterAll
