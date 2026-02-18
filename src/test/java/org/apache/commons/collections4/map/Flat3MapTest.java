@@ -871,6 +871,94 @@ public class Flat3MapTest<K, V> extends AbstractIterableMapTest<K, V> {
         assertNotSame(string2, string3);
     }
 
+    /**
+     * Test equals() with maps of different sizes.
+     * This test targets branch B03: if (size != other.size())
+     */
+    @Test
+    public void testEqualsDifferentSize() {
+        final Flat3Map<String, String> map1 = new Flat3Map<>();
+        final Flat3Map<String, String> map2 = new Flat3Map<>();
+
+        map1.put("key1", "value1");
+
+        map2.put("key1", "value1");
+        map2.put("key2", "value2");
+
+        assertFalse(map1.equals(map2));
+        assertFalse(map2.equals(map1));
+    }
+
+    /**
+     * Test equals() with size-3 map where key3 is missing from other map.
+     * This test targets branch B06: if (!other.containsKey(key3))
+     */
+    @Test
+    public void testEqualsKey3Missing() {
+        final Flat3Map<String, String> map1 = new Flat3Map<>();
+        final Flat3Map<String, String> map2 = new Flat3Map<>();
+
+        map1.put("key1", "value1");
+        map1.put("key2", "value2");
+        map1.put("key3", "value3");
+
+        map2.put("key1", "value1");
+        map2.put("key2", "value2");
+        map2.put("keyX", "value3");
+
+        assertFalse(map1.equals(map2));
+    }
+
+    /**
+     * Test equals() with size-3 map where value3 differs.
+     * This test targets branch B07: if (!Objects.equals(value3, otherValue))
+     */
+    @Test
+    public void testEqualsValue3Mismatch() {
+        final Flat3Map<String, String> map1 = new Flat3Map<>();
+        final Flat3Map<String, String> map2 = new Flat3Map<>();
+
+        map1.put("key1", "value1");
+        map1.put("key2", "value2");
+        map1.put("key3", "value3");
+
+        map2.put("key1", "value1");
+        map2.put("key2", "value2");
+        map2.put("key3", "differentValue");
+
+        assertFalse(map1.equals(map2));
+    }
+
+    /**
+     * Test equals() with size-1 map where key1 is missing from other map.
+     * This test targets branch B12: if (!other.containsKey(key1))
+     */
+    @Test
+    public void testEqualsKey1Missing() {
+        final Flat3Map<String, String> map1 = new Flat3Map<>();
+        final Flat3Map<String, String> map2 = new Flat3Map<>();
+
+        map1.put("key1", "value1");
+        map2.put("keyX", "value1");
+
+        assertFalse(map1.equals(map2));
+    }
+
+    /**
+     * Test equals() with size-1 map where value1 differs.
+     * This test targets branch B13: if (!Objects.equals(value1, otherValue))
+     */
+    @Test
+    public void testEqualsValue1Mismatch() {
+        final Flat3Map<String, String> map1 = new Flat3Map<>();
+        final Flat3Map<String, String> map2 = new Flat3Map<>();
+
+        map1.put("key1", "value1");
+        map2.put("key1", "differentValue");
+
+        assertFalse(map1.equals(map2));
+    }
+
     @AfterAll
     public static void printBranchCoverage() {
         System.out.println("\n");
