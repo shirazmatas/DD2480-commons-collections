@@ -16,6 +16,7 @@
  */
 package org.apache.commons.collections4.sequence;
 
+import static org.apache.commons.collections4.bidimap.TreeBidiMap.coverageCounter;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -25,9 +26,7 @@ import java.util.List;
 import java.util.Random;
 
 import org.apache.commons.lang3.StringUtils;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 class SequencesComparatorTest {
 
@@ -76,6 +75,29 @@ class SequencesComparatorTest {
             list.add(Character.valueOf(string.charAt(i)));
         }
         return list;
+    }
+    @BeforeAll
+    public static void beforeAllTests() {
+        coverageCounter = new int[54];
+    }
+
+    @AfterAll
+    public static void afterAllTests() {
+        System.out.println("\n========== Branch Coverage: swapPosition() ===========");
+        int covered = 0;
+
+        for (int i = 0; i < coverageCounter.length; i++) {
+            if (coverageCounter[i] > 0) {
+                covered++;
+            }
+            final String name = "B" + String.format("%02d", i);
+            final String status = (coverageCounter[i] == 0) ? "[MISSED]" : "[HIT-" + coverageCounter[i] + "x]";
+            System.out.println(name + " : " + status);
+        }
+
+        final double percent = 100.0 * covered / coverageCounter.length;
+        System.out.printf("\nCoverage: %d/%d branches (%.1f%%)\\n", covered, coverageCounter.length, percent);
+        System.out.println("\n==============================================\n");
     }
 
     @BeforeEach
