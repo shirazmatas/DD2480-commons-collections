@@ -11,3 +11,38 @@ The Apache Commons Collections package contains types that extend and augment th
 ## Onboarding experience
 
 The overall onboarding experience of Apache Commons Collections was very smooth, and we decided to continue with the project. As described in the README, The only required tools were a Java JDK and Maven, which we had already installed. The other dependencies were automatically installed by Maven. The build compiled without errors and the tests ran successfully. There were a small number of warnings but these could safely be ignored.
+
+## Complexity
+
+We used Lizard as our tool to automatically measure the complexity of the project. We chose to focus on four large functions: `TreeBidiMap::swapPosition`, `Snake::getMiddleSnake`, `Flat3Map::equals`, and `AbstractPatriciaTrie::nextEntryImpl`.
+
+The results of the automatic and manual CC counts are given in the table below. For every function, the manual count matched the count by the Lizard tool. The operators that resulted in new branches were clear overall.
+
+| Function | Automatic CC | Manual CC |
+|----------|----------|----------|
+| `swapPosition` | 17 | 17 |
+| `nextEntryImpl` | 17 | 17 |
+|`getMiddleSnake`| 27 | 27 |
+|`equals`| 15 | 15 |
+
+In general, high CC is correlated with a high LOC, as all complex functions chosen were also among the longest. However, this correlation is not particularly strong, and there is a large variation as seen in the table below. There are many functions with a large number of non-branching lines of code, as well as many functions with numerous short, simple branches.
+
+| Function | CC | LOC | LOC : CC ratio |
+|----------|----------|----------|----------|
+| `swapPosition` | 17 | 72 | 1.8 |
+| `nextEntryImpl` | 17 | 47 | 2.8 |
+|`getMiddleSnake`| 27 | 49 | 4.2 |
+|`equals`| 15 | 59 | 4.0 |
+
+The purpose of all the functions is related to their high CC, as seen in the table below.
+
+| Function | Purpose                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+|----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `swapPosition` | The function swaps two nodes in a `TreeBidiMap`. It reassigns the parents and left/right children of the nodes, and takes care of edge cases where one is the parent of the other or the root of the tree. It has a high CC because of many edge cases and `null` checks. Swapping the nodes structurally rather than swapping the contents is necessary because each node participates in two trees, one sorted by key and one by value. The function is used during node deletion to rearrange the nodes after one is removed.                                                                                                                                                                                                                                                                                            |
+| `nextEntryImpl` | This function scans for the lexicographically next node in the tree, taking into account the previous node, using a recursive approach. It tests for every possible edge case, which is the reason it has high CC.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+|`getMiddleSnake`| The function gets the middle snake corresponding to two subsequences of the main sequences. It has high CC because it has nested loops, covers both forward and back passes, and has to handle edge cases.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+|`equals`| The function compares this `Flat3Map` with another object to determine equality. It implements the `Map` interface's equals contract by first handling fast-path cases, returning true immediately if comparing the same object reference or delegating to the internal `HashMap` when the map has grown beyond three entries. For objects of a different type, it returns false. The core logic verifies that both maps have identical sizes, then performs element-by-element comparison in flat mode. For maps with 1-3 entries, it uses an optimized switch statement with fall-through cases to verify that the other map contains all the same key-value pairs. This design prioritizes performance for small maps while maintaining correctness for the equals contract. It has high CC because of these many cases. | 
+
+Lizard does not count all exceptions as separate branches. This is reasonable because an exception thrown directly in the method is always guaranteed to be thrown, and therefore does not result in a new branch. This is the case for `getMiddleSnake`. A checked exception within a called function could result in a new branch, but this is not present in any of the functions.
+
+The documentation is generally appropriate and sufficient within all functions. For more involved algorithms, there are either extensive comments or an external link to a detailed explanation. For functions that only have high CC because of a lot of simple checks, the documentation is more minimal but the functions are still not too difficult to understand.
