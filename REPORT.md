@@ -49,7 +49,40 @@ The documentation is generally appropriate and sufficient within all functions. 
 
 ## Refactoring
 
-TODO
+##### swapPosition
+
+The main part of the method that could be refactored to reduce complexity is the repeating logic for the x and y nodes. For them to be swapped, the parent and children of both nodes need to be relinked, which is identical for both nodes except for the reversed references. The logic also has many nested branches to handle edge cases where one node is the parent of the other. This can be significantly reduced through the observation that every link is either the same link as the other node’s former link, or a link to the other node.
+
+The refactoring reduces the CC significantly from 17 to 3, with a new helper function that has a CC of 9. The branches are also far more readable, as there is only a single nested if statement. The total length has been reduced from 72 to 16 + 21 = 37 LOC. Although adding a helper function that is used only once can clutter the class or too many layers of abstraction can increase errors, in this case it is justified because of the major improvement.
+
+To view the refactor implementation:
+```
+git checkout refactoring
+git show 63bdc40aa5cc2ffd31e30c0c0b5d40c07f46a4a4
+```
+
+##### equals
+Most of the complexity in equals() method comes from the switch(size) with fall-through for sizes 3, 2, and 1. Each case repeats the same pattern: first check that the other map contains the key, then check that the value matches. This could be simplified by extracting that repeated logic into a small helper method, for example matchesEntry(key, value, otherMap), and then calling it for the relevant entries. Additionally, the entire switch block could be extracted into a separate compareAllEntries() method. Another improvement would be to keep all the early checks (same object, delegate mode, type check, size check) at the top and keep the "compare entries" part in one clear block.
+
+This would likely reduce the cyclomatic complexity of the main equals() method from 15 to roughly 6–8 which is around 60%, and make the code easier to read and maintain. The downside is that Flat3Map is designed to be fast for very small maps, so extra helper method calls could add a small overhead. In this class, the current optimized but repetitive style may be intentional.
+
+To view the refactor implementation:
+```
+git checkout refactoring
+git show b0f9a9b3878cb412f6204900718ac41e92d3e060
+```
+
+##### nextEntryImpl
+
+This is a recursive method to find the next entry node given a certain starting node and maybe in a specific tree or subtree. Given the nature of the tree data structures, it is not possible to make a simple implementation without taking into account the many possible cases.
+
+The nextEntryImpl function is separated by the author in 7 steps. For the refactor, the first step has been separated from the other 6, from the first recursive call. Since the former also checks for simple possible cases (no data, 2 node trees…), this simple change brings the CC from 17 to 7 and 10. It could also be improved by creating auxiliary functions that could be reused for the rest of the file, but it seems like a hard task given the amount of LOC.
+
+To view the refactor implementation:
+```
+git checkout refactoring
+git show 5984616f56b4e78c54f8f04d0fb4a9deb47f8b46
+```
 
 ## Coverage
 
