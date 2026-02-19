@@ -71,7 +71,28 @@ The coverage measurement is reasonably accurate as it records the number of time
 
 ### Improvement
 
-TODO
+Each team member added four new tests to improve the coverage.  The coverage before the improvement was:
+
+| Class | Method coverage | Class coverage  |
+|----------|----------|----------|
+| `TreeBidiMap` | 1 / 14 (7%) | 261 / 354 (73%) |
+| `Flat3Map` | 9 / 14 (64%)  | 236 / 288 (82%) |
+| `AbstractPatriciaTrie` | 30 / 64 (47%)  | 284 / 538 (52%) |
+
+The coverage after the improvement was:
+
+| Class | Method coverage | Class coverage |
+|----------|----------|----------|
+| `TreeBidiMap` | 14 / 14 (100%) | 279 / 354 (78%) |
+| `Flat3Map` | 14 / 14 (100%)  | 241 / 288 (84%) |
+| `AbstractPatriciaTrie` | 36 / 64 (56%)  | 293 / 538 (54%) |
+
+
+To view the new test cases:
+```
+git checkout coverage-improvement
+git diff 6192b774876d803e566a88a32f535b2380ae318e 7d2fdca0b6d95b971d9f3831cd7a9d0170ca30be
+```
 
 ## Way of working
 
