@@ -448,4 +448,55 @@ public class PatriciaTrieTest<V> extends AbstractSortedMapTest<String, V> {
 //            "src/test/resources/data/test/PatriciaTrie.fullCollection.version4.obj");
 //    }
 
+    @Test
+    public void testNextKeyOnRootOnlyTrieReturnsNull() {
+        PatriciaTrie<String> trie = new PatriciaTrie<>();
+
+        // empty string key is a valid key stored at the root node.
+        trie.put("", "rootV");
+        assertEquals("rootV", trie.get(""));
+
+        // no next key exists when the only entry is the empty root key.
+        assertNull(trie.nextKey(""));
+    }
+
+    @Test
+    public void testFloorEntry_KeyNotExactMatch() {
+        PatriciaTrie<String> trie = new PatriciaTrie<>();
+        trie.put("b", "B");
+        trie.put("d", "D");
+
+        //we try to call floor entry on c which does not exist, so being a floor it should return prev
+        AbstractPatriciaTrie.TrieEntry<String, String> entry = trie.floorEntry("c");
+
+        assertEquals("b", entry.getKey());
+    }
+
+    @Test
+    public void testCeilingEntry_KeySlightlySmaller() {
+        PatriciaTrie<String> trie = new PatriciaTrie<>();
+        trie.put("ab", "1");
+        trie.put("abc", "2");
+
+        //we try to call ceiling entry on a and it should return the first finding in lexicographic order
+        AbstractPatriciaTrie.TrieEntry<String, String> entry = trie.ceilingEntry("a");
+
+        assertEquals("ab", entry.getKey());
+    }
+
+    @Test
+    public void testHigherEntry_KeyNotPresent() {
+
+        PatriciaTrie<String> trie = new PatriciaTrie<>();
+        trie.put("a", "Valor A");
+        trie.put("c", "Valor C");
+
+        // since there is a gap between a and c, b will return the next higer entry (c)
+        AbstractPatriciaTrie.TrieEntry<String, String> entry = trie.higherEntry("b");
+
+        assertEquals("c", entry.getKey());
+    }
+
+
+
 }
