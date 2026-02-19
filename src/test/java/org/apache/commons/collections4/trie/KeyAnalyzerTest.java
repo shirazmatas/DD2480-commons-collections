@@ -50,5 +50,4 @@ class KeyAnalyzerTest {
         assertFalse(KeyAnalyzer.isValidBitIndex(-2), "EQUAL_BIT_KEY should not be a valid index");
         assertFalse(KeyAnalyzer.isValidBitIndex(-3), "OUT_OF_BOUNDS_BIT_KEY should not be a valid index");
     }
-
 }
