@@ -1870,6 +1870,11 @@ public abstract class AbstractPatriciaTrie<K, V> extends AbstractBitwiseTrie<K, 
         }
 
         // If nothing valid on the left, try the right.
+        return nextEntryImplAux(current, previous, tree);
+    }
+
+    private TrieEntry<K, V> nextEntryImplAux(TrieEntry<K, V> current,
+                    final TrieEntry<K, V> previous, final TrieEntry<K, V> tree){
         if (previous != current.right) {
             // See if it immediately is valid.
             if (isValidUplink(current.right, current)) {
