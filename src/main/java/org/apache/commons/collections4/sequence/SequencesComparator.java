@@ -271,54 +271,75 @@ public class SequencesComparator<T> {
 
         for (int d = 0; d <= offset; ++d) {
             // Down
-            for (int k = -d; k <= d; k += 2) {
-                // First step
-
-                final int i = k + offset;
-                if (k == -d || k != d && vDown[i - 1] < vDown[i + 1]) {
-                    vDown[i] = vDown[i + 1];
-                } else {
-                    vDown[i] = vDown[i - 1] + 1;
-                }
-
-                int x = vDown[i];
-                int y = x - start1 + start2 - k;
-
-                while (x < end1 && y < end2 && equator.equate(sequence1.get(x), sequence2.get(y))) {
-                    vDown[i] = ++x;
-                    ++y;
-                }
-                // Second step
-                if (delta % 2 != 0 && delta - d <= k && k <= delta + d && vUp[i - delta] <= vDown[i]) { // NOPMD
-                    return buildSnake(vUp[i - delta], k + start1 - start2, end1, end2);
-                }
+            Snake snake = processDown(start1, end1, start2, end2, d, offset, delta);
+            if (snake != null) {
+                return snake;
             }
 
             // Up
-            for (int k = delta - d; k <= delta + d; k += 2) {
-                // First step
-                final int i = k + offset - delta;
-                if (k == delta - d || k != delta + d && vUp[i + 1] <= vUp[i - 1]) {
-                    vUp[i] = vUp[i + 1] - 1;
-                } else {
-                    vUp[i] = vUp[i - 1];
-                }
-
-                int x = vUp[i] - 1;
-                int y = x - start1 + start2 - k;
-                while (x >= start1 && y >= start2 && equator.equate(sequence1.get(x), sequence2.get(y))) {
-                    vUp[i] = x--;
-                    y--;
-                }
-                // Second step
-                if (delta % 2 == 0 && -d <= k && k <= d && vUp[i] <= vDown[i + delta]) { // NOPMD
-                    return buildSnake(vUp[i], k + start1 - start2, end1, end2);
-                }
+            Snake snake2 = processUp(start1, end1, start2, end2, d, offset, delta);
+            if (snake2 != null) {
+                return snake2;
             }
         }
 
         // this should not happen
         throw new IllegalStateException("Internal Error");
+    }
+
+    /**
+     * Processes the Down search of the Myers algorithm.
+     */
+    private Snake processDown(final int start1, final int end1, final int start2, final int end2,
+                              final int d, final int offset, final int delta) {
+        for (int k = -d; k <= d; k += 2) {
+            final int i = k + offset;
+            if (k == -d || k != d && vDown[i - 1] < vDown[i + 1]) {
+                vDown[i] = vDown[i + 1];
+            } else {
+                vDown[i] = vDown[i - 1] + 1;
+            }
+
+            int x = vDown[i];
+            int y = x - start1 + start2 - k;
+
+            while (x < end1 && y < end2 && equator.equate(sequence1.get(x), sequence2.get(y))) {
+                vDown[i] = ++x;
+                ++y;
+            }
+
+            if (delta % 2 != 0 && delta - d <= k && k <= delta + d && vUp[i - delta] <= vDown[i]) { // NOPMD
+                return buildSnake(vUp[i - delta], k + start1 - start2, end1, end2);
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Processes the Up search of the Myers algorithm.
+     */
+    private Snake processUp(final int start1, final int end1, final int start2, final int end2,
+                            final int d, final int offset, final int delta) {
+        for (int k = delta - d; k <= delta + d; k += 2) {
+            final int i = k + offset - delta;
+            if (k == delta - d || k != delta + d && vUp[i + 1] <= vUp[i - 1]) {
+                vUp[i] = vUp[i + 1] - 1;
+            } else {
+                vUp[i] = vUp[i - 1];
+            }
+
+            int x = vUp[i] - 1;
+            int y = x - start1 + start2 - k;
+            while (x >= start1 && y >= start2 && equator.equate(sequence1.get(x), sequence2.get(y))) {
+                vUp[i] = x--;
+                y--;
+            }
+
+            if (delta % 2 == 0 && -d <= k && k <= d && vUp[i] <= vDown[i + delta]) { // NOPMD
+                return buildSnake(vUp[i], k + start1 - start2, end1, end2);
+            }
+        }
+        return null;
     }
 
     /**
