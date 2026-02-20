@@ -84,6 +84,15 @@ git checkout refactoring
 git show 5984616f56b4e78c54f8f04d0fb4a9deb47f8b46
 ```
 
+##### getMiddleSnake
+As this is based on Myers Algorithm we can see the two information dense for loops and move them into two separate function Up and Down. Another refactoring would be to extract the initial params calculation into separate function.
+
+To view the refactor implementation:
+```
+git checkout refactoring
+git show 
+```
+
 ## Coverage
 
 ### External tool
@@ -111,7 +120,8 @@ Each team member added four new tests to improve the coverage.  The coverage bef
 | `TreeBidiMap` | 1 / 14 (7%) | 261 / 354 (73%) |
 | `Flat3Map` | 9 / 14 (64%)  | 236 / 288 (82%) |
 | `AbstractPatriciaTrie` | 30 / 64 (47%)  | 284 / 538 (52%) |
-
+| `KeyAnalyzer` | 0/4 (0%)  | 4 / 14 (28%)  |
+Please note keyAnalyzer was used instead of getMiddleSnake as getMiddleSnake only lacked impossible to reach branch.
 The coverage after the improvement was:
 
 | Class | Method coverage | Class coverage |
@@ -119,6 +129,7 @@ The coverage after the improvement was:
 | `TreeBidiMap` | 14 / 14 (100%) | 279 / 354 (78%) |
 | `Flat3Map` | 14 / 14 (100%)  | 241 / 288 (84%) |
 | `AbstractPatriciaTrie` | 36 / 64 (56%)  | 293 / 538 (54%) |
+| `KeyAnalyzer` | 4/4 (100%)  | 10 / 14 (71%)  |
 
 
 To view the new test cases:
